@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Hero } from '../interfaces/hero.interface';
 import { environments } from '../../../environments/environments';
 
@@ -20,7 +20,14 @@ export class HereosService {
       .pipe (
         catchError ( error => of ( undefined )  )
          );
-    };
+  };
+
+  getSuggestion(query: string): Observable <Hero []> {
+    return this.httpClient.get<Hero[]>(`${this.baseUrl}/heroes`).pipe(
+      map((heroes: Hero[]) => heroes.filter(hero => hero.superhero.toLocaleLowerCase().includes(query.toLocaleLowerCase())))
+    );
+  }
+
 }
 
 
