@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Publisher } from '../../interfaces/hero.interface';
+
 
 @Component({
   selector: 'app-new-page',
@@ -6,6 +9,16 @@ import { Component } from '@angular/core';
   styleUrl: './new-page.component.css'
 })
 export class NewPageComponent {
+
+  public heroForm = new FormControl ({
+    id:               new FormGroup<string>(''),
+    superhero:        new FormControl<string>('', { nonNullable: true }),
+    publisher:        new FormControl<Publisher>( Publisher.DCComics ),
+    alter_ego:        new FormControl<string>(''),
+    first_appearance: new FormControl<string>(''),
+    characters:       new FormControl<string>(''),
+    alt_img:          new FormControl(''),
+  });
 
   public publishers = [
     {id: 'DC Comics', desc: 'DC-Comics'},
