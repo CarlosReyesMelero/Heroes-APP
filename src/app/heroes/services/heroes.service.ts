@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { Hero } from '../interfaces/hero.interface';
 import { environments } from '../../../environments/environments';
+import { query } from '@angular/animations';
 
 @Injectable({providedIn: 'root'})
 export class HereosService {
@@ -28,6 +29,22 @@ export class HereosService {
     );
   }
 
+  addHero( hero: Hero ): Observable<Hero> {
+    return this.httpClient.post<Hero>(`${ this.baseUrl }/heroes`, hero);
+  }
+
+  updateHero( hero: Hero ): Observable<Hero> {
+    if (!hero.id) throw Error ('Hero id is required');
+    return this.httpClient.patch<Hero>(`${ this.baseUrl }/heroes/${ hero.id}`, hero);
+  }
+
+  deleteHeroById( id: string ): Observable<boolean> {
+    return this.httpClient.delete(`${ this.baseUrl }/heroes/${ id }`)
+      .pipe(
+        catchError(err => of (false)),
+        map ( re => true)
+      );
+  }
 }
 
 
